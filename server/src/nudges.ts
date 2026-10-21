@@ -154,7 +154,11 @@ export function compose(kind: NudgeKind, stage: NudgeStage, parts: { opener: num
   const said = (o: { text: string }) => (o.text ? w.t(o.text) : '');
   const fill = (s: string) => fillVars(s, { t: v.t, m: v.m, at: v.at, n: v.n });
   const lower = (s: string) => (opener.lower && w.lang === 'en' && !s.startsWith('{') ? s[0].toLowerCase() + s.slice(1) : s);
-  const render = (o: string, h: string) => `${o ? `${fill(o)} ${fill(lower(core))}` : fill(core)}${h ? `${/[!?.]$/.test(core) ? ' ' : '. '}${h}` : ''} ${parts.emoji}`;
+  // Chinese ends a sentence with 。 and puts no space after it (or after its openers); English and
+  // German join with a space and use ". ".
+  const chinese = w.lang === 'zh';
+  const stop = chinese ? (/[!?！？。]$/.test(core) ? '' : '。') : (/[!?.]$/.test(core) ? ' ' : '. ');
+  const render = (o: string, h: string) => `${o ? `${fill(o)}${chinese ? '' : ' '}${fill(lower(core))}` : fill(core)}${h ? `${stop}${h}` : ''} ${parts.emoji}`;
   let hint = parts.hint, o = said(opener);
   if ([...render(o, hint)].length > MAX) hint = '';
   if ([...render(o, hint)].length > MAX) o = '';

@@ -124,6 +124,10 @@ test('pasted text: headings split ingredients from steps', () => {
   assert.deepEqual(r.steps.map((s) => s.text), ['Mix.', 'Cook on a griddle.', 'Eat.']);
   assert.equal(parseRecipeText('METHOD\nstir'), null);
   assert.deepEqual(parseRecipeText('INGREDIENTS\n1 egg\nMethod\nBoil it.')!.steps.map((s) => s.text), ['Boil it.']);
+  const zh = parseRecipeText('番茄炒蛋\n2 人份\n家常做法。\n\n食材：\n2 个鸡蛋\n2 个番茄\n\n做法\n1. 炒蛋。\n2. 加番茄。')!;
+  assert.deepEqual([zh.name, zh.servings, zh.description], ['番茄炒蛋', 2, '家常做法。']);
+  assert.deepEqual(zh.ingredients.map((i) => [i.name, i.quantity, i.unit]), [['鸡蛋', 2, '个'], ['番茄', 2, '个']]);
+  assert.deepEqual(zh.steps.map((s) => s.text), ['炒蛋。', '加番茄。']);
 });
 
 // A little web server for the fetch tests.

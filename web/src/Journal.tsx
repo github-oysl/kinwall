@@ -9,16 +9,13 @@ import { api, ApiError } from './api.ts'
 import { useApp } from './AppContext.tsx'
 import { todayKeyInTz } from './date.ts'
 import { dayName } from './Snapshot.tsx'
-import { SLEEP } from './tempCheck.ts'
+import { feelingText, SLEEP } from './tempCheck.ts'
 import { JOURNAL_TEXT_MAX, MOODS, outcomeOf, privacyLine } from './journal.ts'
 import GoalFollowUp from './GoalFollowUp.tsx'
 import Sheet from './Sheet.tsx'
 import type { Journal as JournalData, JournalDay, JournalEntry, Member } from './types.ts'
 import { Face } from './Face'
-import { msg, t, tm, tn } from './i18n.ts'
-
-/** "Slept great": the Temp check's sleep answer read back (marked: tm()). */
-const SLEPT: Record<string, string> = { great: msg('Slept great'), good: msg('Slept good'), ok: msg('Slept ok'), poorly: msg('Slept poorly'), terrible: msg('Slept terrible') }
+import { t, tm, tn } from './i18n.ts'
 
 const PAGE_DAYS = 60
 const dayBefore = (d: string) => new Date(Date.parse(`${d}T12:00:00Z`) - 86_400_000).toISOString().slice(0, 10)
@@ -119,7 +116,7 @@ function Day({ day, today, onEdit }: { day: JournalDay; today: string; onEdit: (
     <li className="board-card journal-day">
       <h3 className="snap-heading">{day.date === today ? t('Today') : dayName(day.date, { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
       {check && (sleep || check.feelings?.length) && (
-        <p className="journal-line">{[sleep && `${sleep.emoji} ${tm(SLEPT[sleep.key])}`, check.feelings?.length && t('Feeling {list}', { list: check.feelings.join(', ') })].filter(Boolean).join(' · ')}</p>
+        <p className="journal-line">{[sleep && `${sleep.emoji} ${tm(sleep.label)}`, check.feelings?.length && t('Feeling {list}', { list: check.feelings.map(feelingText).join(', ') })].filter(Boolean).join(' · ')}</p>
       )}
       {check?.goal && (
         <div className="journal-goal">

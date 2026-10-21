@@ -44,6 +44,13 @@ test('nudges: the same parts, written in German', () => {
   assert.match(medFollowup('Maya', '20 Uhr', 'dose1', de), /Medikamente von Maya/);
 });
 
+test('nudges: Chinese joins its parts with Chinese punctuation and no spaces', () => {
+  const n = { kind: 'leave' as const, title: '足球', minutes: 20, at: '15:40', seed: 'x', name: 'Leo' };
+  const line = pickNudge(n, [], { t: words('zh').t, lang: 'zh' }).line;
+  assert.match(line, /。/, line);
+  assert.doesNotMatch(line, /，\s|。\s/, line);
+});
+
 test('refill steps, outing notes, stored text', () => {
   assert.equal(stepsToWords([{ kind: 'wait', seconds: 4 }, { kind: 'press', digits: '2' }], 'de'), words('de').t('{steps}, then {last}', { steps: words('de').tn(4, 'wait {n} second', 'wait {n} seconds'), last: 'drücke 2' }).replace(/^./, (c) => c.toUpperCase()) + '.');
   const r = dateAnnounced({ id: 'o', title: 'Zirkus', kind: 'upcoming', startsOn: '2026-10-17', endsOn: null, startTime: null, buyBy: null, interest: [{ memberId: 'm1', level: 'really' }] } as never, null)!;

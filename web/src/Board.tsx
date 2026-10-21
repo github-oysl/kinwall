@@ -473,7 +473,6 @@ export default function Board({ show, onTap, chipHost }: { show: (e: EventInstan
   const goals = !rewards ? [] : members.filter(m => m.rewardGoal && (!selectedMemberId || m.id === selectedMemberId) && (!focusMemberId || m.id === focusMemberId))
   const goalsText = goals.map(m => `${m.name} ${m.rewardGoal!.emoji ?? '🎁'} ${m.balance >= m.rewardGoal!.cost ? t('Ready!') : `${Math.max(0, m.balance)}/${m.rewardGoal!.cost}`}`).join(' · ')
   const goalsShort = goals.map(m => `${m.rewardGoal!.emoji ?? '🎁'} ${m.balance >= m.rewardGoal!.cost ? '✓' : `${Math.max(0, m.balance)}/${m.rewardGoal!.cost}`}`).join(' ')
-  const goalsSaid = goals.map(m => `${m.name} ${goalText(m)!.label}`).join(', ')
   const milestoneLines = !rewards ? [] : milestones.flatMap(m => m.members.filter(p => !p.givenAt && (!selectedMemberId || p.memberId === selectedMemberId) && (!focusMemberId || p.memberId === focusMemberId)).map(p => t('{name}: {milestone} · {progress}', { name: byId.get(p.memberId)?.name ?? t('Someone'), milestone: m.title, progress: p.earnedAt ? t('Earned!') : t('{have} of {target}', { have: p.progress, target: m.target }) }))).slice(0, 2)
   const milestonesChip = <a className="board-slot-chip" href="#/rewards" aria-label={t('Reward milestones')}><span aria-hidden="true">🏅</span><span className="board-slot-chip-text">{t('Milestones')}</span></a>
   const milestonesLink = milestoneLines.length > 0 && <a className="board-slot-row" href="#/rewards"><span aria-hidden="true">🏅</span><span className="board-slot-row-text">{t('Reward milestones: {progress}', { progress: milestoneLines.join(' · ') })}</span></a>
@@ -492,9 +491,9 @@ export default function Board({ show, onTap, chipHost }: { show: (e: EventInstan
     // Right after the chores: what the kids are saving for, at every size the full Chores card isn't on.
     todayTiles && choresTile && goals.length > 0 && {
       key: 'goals',
-      chip: <a className="board-slot-chip" href="#/rewards" aria-label={`Saving for: ${goalsSaid}`}><span aria-hidden="true">🎯</span><span aria-hidden="true" className="board-slot-chip-text board-slot-chip-short">{goalsShort}</span><span aria-hidden="true" className="board-slot-chip-text board-slot-chip-long">{goalsText}</span></a>,
-      row: <a className="board-slot-row" href="#/rewards" aria-label={`Saving for: ${goalsSaid}`}><span aria-hidden="true">🎯</span><span className="board-slot-row-text" aria-hidden="true">{goalsText}</span></a>,
-      full: <a className="board-slot-row" href="#/rewards" aria-label={`Saving for: ${goalsSaid}`}><span aria-hidden="true">🎯</span><span className="board-slot-row-text" aria-hidden="true">{goalsText}</span></a>,
+      chip: <a className="board-slot-chip" href="#/rewards" aria-label={t('Saving for: {names}', { names: goalsText })}><span aria-hidden="true">🎯</span><span aria-hidden="true" className="board-slot-chip-text board-slot-chip-short">{goalsShort}</span><span aria-hidden="true" className="board-slot-chip-text board-slot-chip-long">{goalsText}</span></a>,
+      row: <a className="board-slot-row" href="#/rewards" aria-label={t('Saving for: {names}', { names: goalsText })}><span aria-hidden="true">🎯</span><span className="board-slot-row-text" aria-hidden="true">{goalsText}</span></a>,
+      full: <a className="board-slot-row" href="#/rewards" aria-label={t('Saving for: {names}', { names: goalsText })}><span aria-hidden="true">🎯</span><span className="board-slot-row-text" aria-hidden="true">{goalsText}</span></a>,
     },
     todayTiles && choresTile && milestoneLines.length > 0 && { key: 'milestones', chip: milestonesChip, row: milestonesLink, full: milestonesLink },
     todayTiles && dueTile && items.length > 0 && dueSummary && {
@@ -543,7 +542,7 @@ export default function Board({ show, onTap, chipHost }: { show: (e: EventInstan
               <a className="board-tile" href="#/chores">
                 <span className="board-tile-label">✅ {t('Chores')}</span>
                 <span className="board-tile-value">{choresLeft ? t('{n} left today', { n: choresLeft }) : chores.length ? t('All done ✓') : t('None today')}</span>
-                {goalsLine}{goalsSaid && <span className="sr-only">{goalsSaid}</span>}
+                {goalsLine}{goals.length > 0 && <span className="sr-only">{t('Saving for: {names}', { names: goalsText })}</span>}
                 {chores.length > 0 && (
                   <span className="board-tile-people">
                     {chores.map(c => (

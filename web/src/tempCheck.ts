@@ -2,17 +2,21 @@
 // Board and the calendar. Pure, so web/test/tempCheck.test.ts covers it. Mirrors server/src/schemas.ts.
 import { format } from 'date-fns'
 import { dateKey } from './date.ts'
+import { msg, tm } from './i18n.ts'
 import type { Drained, GoalFollowup, Member, TempCheckAnswered, TempCheckSettings } from './types.ts'
 
 export const SLEEP = [
-  { key: 'great', emoji: '😄', label: 'Great' },
-  { key: 'good', emoji: '🙂', label: 'Good' },
-  { key: 'ok', emoji: '😐', label: 'OK' },
-  { key: 'poorly', emoji: '😕', label: 'Poorly' },
-  { key: 'terrible', emoji: '😫', label: 'Terrible' },
+  { key: 'great', emoji: '😄', label: msg('Slept great') },
+  { key: 'good', emoji: '🙂', label: msg('Slept good') },
+  { key: 'ok', emoji: '😐', label: msg('Slept ok') },
+  { key: 'poorly', emoji: '😕', label: msg('Slept poorly') },
+  { key: 'terrible', emoji: '😫', label: msg('Slept terrible') },
 ] as const
 export type Sleep = (typeof SLEEP)[number]['key']
 export const FEELINGS = ['great', 'good', 'fine', 'ok', 'bad', 'awful', 'tired', 'sore']
+/** The built-in feelings as people read them (saved in English; their own answers show as typed). */
+const FEELING_WORD: Record<string, string> = { great: msg('great'), good: msg('good'), fine: msg('fine'), ok: msg('ok'), bad: msg('bad'), awful: msg('awful'), tired: msg('tired'), sore: msg('sore') }
+export const feelingText = (feeling: string): string => tm(FEELING_WORD[feeling.toLowerCase()] ?? feeling)
 export const GOAL_MAX = 140
 export const TEMP_CHECK_OFF: TempCheckSettings = { on: false, sleep: true, feelings: true, goal: true, showGoal: true, evening: false, eveningTime: '21:00', journal: true, battery: false }
 

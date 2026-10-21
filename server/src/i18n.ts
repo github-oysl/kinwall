@@ -17,13 +17,14 @@
 import type { Context } from 'hono';
 import type { KinwallDb } from './db.ts';
 import de from './locales/de.json' with { type: 'json' };
+import zh from './locales/zh.json' with { type: 'json' };
 
-export type Lang = 'en' | 'de';
-export const LANGS: readonly Lang[] = ['en', 'de'];
+export type Lang = 'en' | 'de' | 'zh';
+export const LANGS: readonly Lang[] = ['en', 'de', 'zh'];
 export const isLang = (v: unknown): v is Lang => LANGS.includes(v as Lang);
-const DICTS: Record<Lang, Record<string, string> | null> = { en: null, de };
+const DICTS: Record<Lang, Record<string, string> | null> = { en: null, de, zh };
 /** For Intl formatters (dates, lists, numbers). */
-export const LOCALES: Record<Lang, string> = { en: 'en-US', de: 'de-DE' };
+export const LOCALES: Record<Lang, string> = { en: 'en-US', de: 'de-DE', zh: 'zh-CN' };
 
 type Vars = Record<string, string | number>;
 const fill = (text: string, vars?: Vars) =>

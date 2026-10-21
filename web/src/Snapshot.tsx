@@ -8,7 +8,7 @@ import { Confetti } from './Chores.tsx'
 import GetStuffDone from './GetStuffDone.tsx'
 import { earnedText, waitsForOk } from './choreDay.ts'
 import { checkInFocus, checkInLabel, checkInState } from './checkIn.ts'
-import { feelingOptions, GOAL_MAX, SLEEP, tempCheckDone, toggleFeeling } from './tempCheck.ts'
+import { feelingOptions, feelingText, GOAL_MAX, SLEEP, tempCheckDone, toggleFeeling } from './tempCheck.ts'
 import { CheckIcon } from './icons.tsx'
 import GoalFollowUp from './GoalFollowUp.tsx'
 import TakeNow from './TakeNow.tsx'
@@ -206,8 +206,8 @@ function TempCheck({ member }: { member: Member }) {
   const done = tempCheckDone(s, tc.answered)
   const sleepLabel = SLEEP.find(x => x.key === tc.sleep)
   const summary = tc.private ? t('Answered ✓') : [
-    s.sleep && sleepLabel && `${sleepLabel.emoji} ${t('Slept {how}', { how: sleepLabel.label.toLowerCase() })}`,
-    s.feelings && tc.feelings?.length && t('Feeling {feelings}', { feelings: tc.feelings.join(', ') }),
+    s.sleep && sleepLabel && `${sleepLabel.emoji} ${tm(sleepLabel.label)}`,
+    s.feelings && tc.feelings?.length && t('Feeling {feelings}', { feelings: tc.feelings.map(feelingText).join(', ') }),
     s.goal && (tc.goal ? `🎯 ${tc.goal}` : tc.goalSkipped && t('No goal today')),
   ].filter(Boolean).join(' · ')
 
@@ -226,7 +226,7 @@ function TempCheck({ member }: { member: Member }) {
             <div className="snap-temp-sleep">
               {SLEEP.map(x => (
                 <button key={x.key} className={`snap-temp-face ${sleep === x.key ? 'active' : ''}`} aria-pressed={sleep === x.key} onClick={() => pickSleep(x.key)}>
-                  <span aria-hidden="true">{x.emoji}</span>{x.label}
+                  <span aria-hidden="true">{x.emoji}</span>{tm(x.label)}
                 </button>
               ))}
             </div>
@@ -238,7 +238,7 @@ function TempCheck({ member }: { member: Member }) {
             <div className="chip-row">
               {feelingOptions([...(tc.custom ?? []), ...picked]).map(f => {
                 const on = picked.some(p => p.toLowerCase() === f.toLowerCase())
-                return <button key={f} className={`chip ${on ? 'active' : ''}`} aria-pressed={on} onClick={() => pickFeeling(f)}>{f}</button>
+                return <button key={f} className={`chip ${on ? 'active' : ''}`} aria-pressed={on} onClick={() => pickFeeling(f)}>{feelingText(f)}</button>
               })}
               {other === null && <button className="chip" onClick={() => setOther('')}>{t('Other…')}</button>}
             </div>

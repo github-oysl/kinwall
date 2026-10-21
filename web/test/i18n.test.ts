@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { DAY, formatDate, intlLocale, lang, msg, pickLang, playerLang, setLang, t, tc, tn } from '../src/i18n.ts'
+import { DAY, formatDate, intlLocale, lang, languageName, msg, pickLang, playerLang, setLang, t, tc, tn } from '../src/i18n.ts'
 
 const de = {
   'Notifications': 'Benachrichtigungen', 'Remove: {title}': 'Entfernen: {title}', 'now-next|Next': 'Danach', 'Next': 'Weiter',
@@ -47,6 +47,16 @@ test('tn: one or other by the plural rules, with {n} formatted for the language'
   await setLang('de', async () => ({ ...de, '{n} days#other': '{n} Tage (Form)' }))
   assert.equal(tn(3, '{n} day', '{n} days'), '3 Tage (Form)')
   assert.equal(tn(1, '{n} day', '{n} days'), '1 Tag')
+  await setLang('en')
+})
+
+test('zh: Chinese uses the other plural form for every count, with the zh-CN number format', async () => {
+  assert.equal(languageName('zh'), '中文')
+  await setLang('zh', async () => ({ 'Notifications': '通知', '{n} day': '{n} 天', '{n} days': '{n} 天' }))
+  assert.equal(t('Notifications'), '通知')
+  assert.equal(tn(1, '{n} day', '{n} days'), '1 天')
+  assert.equal(tn(3, '{n} day', '{n} days'), '3 天')
+  assert.equal(tn(1200, '{n} day', '{n} days'), '1,200 天')
   await setLang('en')
 })
 

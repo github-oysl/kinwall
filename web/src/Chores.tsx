@@ -34,7 +34,7 @@ import { NOT_NOW, suggestionDetails } from './choreSuggest.ts'
 import { shareText } from './rewardSplit.ts'
 import { choreOrder, earnedText, isLate, pointsEarned, pointsGivenOut, waitsForOk } from './choreDay.ts'
 import { latestOnly } from './latest.ts'
-import { DAY, formatDate, LONG_DAY, msg, t, tn, tm } from './i18n.ts'
+import { DAY, formatDate, LONG_DAY, msg, t, tc, tn, tm } from './i18n.ts'
 
 function updatedGoalProgress(progress: GoalProgress, doneDelta: number, pendingDelta: number): GoalProgress {
   const done = Math.max(0, progress.done + doneDelta), pending = Math.max(0, progress.pending + pendingDelta)
@@ -596,7 +596,7 @@ export default function Chores() {
         {!isPhone && leaderboard}
         {parentDevice && <GivePoints memberId={selectedMemberId} className="btn btn-secondary chores-rewards-btn chores-library-btn" label={t('Give points')}><span aria-hidden="true">⭐</span> <span className="chores-rewards-label">{t('Give points')}</span><span className="chores-short-label">{t('Give')}</span></GivePoints>}
         {parentDevice && <button type="button" className={`btn chores-rewards-btn chores-library-btn ${editing ? 'btn-primary' : 'btn-secondary'}`} aria-pressed={editing} aria-label={t('Edit chores')} onClick={() => setEditing(e => !e)}><span aria-hidden="true">✏️</span> <span className="chores-rewards-label">{t('Edit chores')}</span><span className="chores-short-label">{t('Edit')}</span></button>}
-        {parentDevice && <button type="button" className="btn btn-secondary chores-rewards-btn chores-library-btn" onClick={() => setLibraryOpen(true)}><span aria-hidden="true">🧰</span> <span className="chores-rewards-label">{t('Library')}</span><span className="chores-short-label">{t('Library')}</span></button>}
+        {parentDevice && <button type="button" className="btn btn-secondary chores-rewards-btn chores-library-btn" onClick={() => setLibraryOpen(true)}><span aria-hidden="true">🧰</span> <span className="chores-rewards-label">{tc('chores', 'Library')}</span><span className="chores-short-label">{tc('chores', 'Library')}</span></button>}
         {canSuggest && <button type="button" className="btn btn-secondary chores-rewards-btn" onClick={() => setSuggestFor(suggester ?? 'who')}><span aria-hidden="true">💡</span> <span className="chores-rewards-label">{t('Suggest a chore')}</span><span className="chores-short-label">{t('Idea')}</span></button>}
         {rewardsShown && <a className="btn btn-secondary chores-rewards-btn" href={selectedMemberId ? `#/rewards/${selectedMemberId}` : '#/rewards'}><span aria-hidden="true">🎁</span> <span className="chores-rewards-label">{t('Rewards')}</span><span className="chores-short-label">{t('Rewards')}</span></a>}
       </div>

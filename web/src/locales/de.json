@@ -3295,7 +3295,6 @@
   "Slept ok": "Okay geschlafen",
   "Slept poorly": "Schlecht geschlafen",
   "Slept terrible": "Sehr schlecht geschlafen",
-  "Slept {how}": "Schlaf: {how}",
   "Slide right to keep lighter lines, left for only the darkest.": "Nach rechts schieben, um hellere Linien zu behalten, nach links für nur die dunkelsten.",
   "Small": "Klein",
   "Small text": "Kleine Schrift",
@@ -4912,5 +4911,15 @@
   "Titles, done, due dates, notes and steps sync both ways, and priority with Todoist and Microsoft To Do. Who it’s for and the discussion stay in Kinwall.": "Titel, Erledigt, Fälligkeitsdatum, Notizen und Schritte synchronisieren in beide Richtungen, die Priorität mit Todoist und Microsoft To Do. Für wen es ist und die Unterhaltung bleiben in Kinwall.",
   "Connect {app} again in Settings to pick up where it left off.": "Verbinde {app} in den Einstellungen noch einmal, dann geht es dort weiter, wo es aufgehört hat.",
   "{lists} will sync again once you connect {app}.": "{lists} synchronisiert wieder, sobald du {app} verbindest.",
-  "Pick an end time for a visit that spans days.": "Wähle eine Endzeit für einen Besuch, der mehrere Tage dauert."
+  "Pick an end time for a visit that spans days.": "Wähle eine Endzeit für einen Besuch, der mehrere Tage dauert.",
+  "To-dos": "To-dos",
+  "chores|Library": "Aufgaben-Bibliothek",
+  "great": "super",
+  "good": "gut",
+  "fine": "okay",
+  "ok": "geht so",
+  "bad": "schlecht",
+  "awful": "schlimm",
+  "tired": "müde",
+  "sore": "verspannt"
 }

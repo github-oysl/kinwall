@@ -15,10 +15,10 @@ export const typeFields = (t: ListType): { kind: ListKind; catalog?: ListCatalog
 
 export const TYPE_LABEL: Record<ListType, string> = { groceries: msg('Groceries'), shopping: msg('Shopping'), todo: msg('To-do'), reusable: msg('Reusable') }
 const SECTIONS: { type: ListType; label: string }[] = [
-  { type: 'groceries', label: 'Groceries' },
-  { type: 'shopping', label: 'Shopping' },
-  { type: 'todo', label: 'To-dos' },
-  { type: 'reusable', label: 'Reusable' },
+  { type: 'groceries', label: msg('Groceries') },
+  { type: 'shopping', label: msg('Shopping') },
+  { type: 'todo', label: msg('To-dos') },
+  { type: 'reusable', label: msg('Reusable') },
 ]
 
 /** The family order (sort, then oldest first - same as GET /api/lists). */

@@ -12,6 +12,8 @@ test('headerLang: the first language Kinwall comes in, by q; else null', () => {
   assert.equal(headerLang('fr-FR, en-US;q=0.8, de;q=0.9'), 'de');
   assert.equal(headerLang('fr, es'), null);
   assert.equal(headerLang('de;q=0, en'), 'en');
+  assert.equal(headerLang('zh-CN,en;q=0.5'), 'zh');
+  assert.equal(headerLang('zh-Hant-TW'), 'zh');
   assert.equal(headerLang(undefined), null);
 });
 
@@ -27,6 +29,10 @@ test('words: English is the key and the fallback; counts and lists follow the la
   assert.equal(de.list(['Leo', 'Maya', 'Sam']), 'Leo, Maya und Sam');
   assert.equal(translateStored('en', 'error', 'Only Leo can change this'), 'Only Leo can change this');
   assert.equal(translateStored('de', 'error', 'Nothing matches this at all, 42'), 'Nothing matches this at all, 42', 'unknown text stays as written');
+  const zh = words('zh');
+  assert.equal(zh.t('Notifications are on 🎉'), '通知已开启 🎉');
+  assert.equal(zh.tn(1, 'You finished {n} chore', 'You finished {n} chores'), '你完成了 1 项家务', 'Chinese has one plural form');
+  assert.equal(translateStored('zh', 'error', 'Not found'), '未找到');
 });
 
 test("familyLang and a push device's language: the owner's, else the family's", async () => {
@@ -35,6 +41,9 @@ test("familyLang and a push device's language: the owner's, else the family's", 
   assert.equal(await familyLang(db), 'en');
   await db.prepare("INSERT INTO settings (key, value) VALUES ('language', 'de')").run();
   assert.equal(await familyLang(db), 'de');
+  await db.prepare("UPDATE settings SET value = 'zh' WHERE key = 'language'").run();
+  assert.equal(await familyLang(db), 'zh');
+  await db.prepare("UPDATE settings SET value = 'de' WHERE key = 'language'").run();
   await db.prepare("INSERT INTO members (id, name, color, language, created_at) VALUES ('m1', 'Leo', '#e57', 'en', '2026-01-01'), ('m2', 'Maya', '#57e', NULL, '2026-01-01')").run();
   await db.prepare("INSERT INTO api_keys (id, name, hash, prefix, created_at, scope, owner) VALUES ('k1', 'leo', 'h1', 'p', '2026-01-01', 'display', 'm1'), ('k2', 'maya', 'h2', 'p', '2026-01-01', 'display', 'm2'), ('k3', 'wall', 'h3', 'p', '2026-01-01', 'display', 'shared')").run();
   const sub = (id: string, key: string) => db.prepare("INSERT INTO push_subscriptions (id, api_key_id, endpoint, p256dh, auth, device_name, member_ids, prefs, created_at) VALUES (?, ?, ?, 'p', 'a', 'd', '[]', '{}', '2026-01-01')").bind(id, key, `https://push.example/${id}`).run();

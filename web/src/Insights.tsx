@@ -6,7 +6,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { api, ApiError } from './api.ts'
 import { useApp } from './AppContext.tsx'
-import { SLEEP } from './tempCheck.ts'
+import { feelingText, SLEEP } from './tempCheck.ts'
 import { duration } from './profile.ts'
 import { Bar } from './Profile.tsx'
 import BatteryCard from './Battery.tsx'
@@ -147,14 +147,14 @@ function Feelings({ d, weeks }: { d: InsightsData; weeks: Week[] }) {
   const trend = top.slice(0, 4)
   return (
     <>
-      {top.map(f => <Bar key={f.feeling} label={f.feeling} value={f.days} max={top[0].days} text={tn(f.days, '{n} day', '{n} days')} />)}
+      {top.map(f => <Bar key={f.feeling} label={feelingText(f.feeling)} value={f.days} max={top[0].days} text={tn(f.days, '{n} day', '{n} days')} />)}
       {weeks.length > 1 && (
         <>
           <p className="profile-note">{t('Each week')}</p>
           <div className="insights-trend">
             {trend.map(f => (
-              <div key={f.feeling} className="insights-trend-row" role="img" aria-label={t('{feeling}, days each week: {list}', { feeling: f.feeling, list: weeks.map(w => w.feelings[f.feeling] ?? 0).join(', ') })}>
-                <span className="insights-trend-label">{f.feeling}</span>
+              <div key={f.feeling} className="insights-trend-row" role="img" aria-label={t('{feeling}, days each week: {list}', { feeling: feelingText(f.feeling), list: weeks.map(w => w.feelings[f.feeling] ?? 0).join(', ') })}>
+                <span className="insights-trend-label">{feelingText(f.feeling)}</span>
                 <span className="insights-mini">{weeks.map(w => <span key={w.from} style={{ height: `${((w.feelings[f.feeling] ?? 0) / 7) * 100}%` }} />)}</span>
               </div>
             ))}

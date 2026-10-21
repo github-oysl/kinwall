@@ -1,13 +1,15 @@
 # Translations
 
-Kinwall is available in English and German (Deutsch). German covers every screen of the web app and
-the text the server writes for people: push notifications, the newscast, insights, the battery,
-error messages and more (see [What's translated](#whats-translated)). The phone apps' own screens
-follow the phone's language and are still English.
+Kinwall is available in English, German (Deutsch) and Simplified Chinese (中文). German and Chinese
+cover every screen of the web app and the text the server writes for people: push notifications,
+the newscast, insights, the battery, error messages and more (see
+[What's translated](#whats-translated)). The phone apps' own screens follow the phone's language and
+are still English.
 
 The German translation is by [sudo-Foras666](https://github.com/sudo-Foras666), from their
 [German fork](https://github.com/sudo-Foras666/kinwall): the web app's and the server's German, and
-the way Kinwall handles translations. Thank you!
+the way Kinwall handles translations. Thank you! The Simplified Chinese translation covers the web
+app and the server text the same way.
 
 How a family picks a language is in [Settings → General](../settings/general.md#language).
 
@@ -65,7 +67,8 @@ generated, so don't edit them by hand. Server keys that start with `error|` are 
    improve them.
 2. Translate the values. Leave out anything you're unsure of: it shows in English.
 3. For a new language, add it to `LANGUAGES` and `LOADERS` in `web/src/i18n.ts`, to `LANGUAGES` in
-   `server/src/schemas.ts`, and to `LANGS`, `DICTS` and `LOCALES` in `server/src/i18n.ts`.
+   `server/src/schemas.ts`, and to `LANGS`, `DICTS` and `LOCALES` in `server/src/i18n.ts`. Chinese
+   (`zh`) uses `zh-CN` for dates and numbers.
 4. Run the checks (`scripts/check.sh`, or just `node scripts/i18n-check.mjs` and
    `node scripts/i18n-check.mjs --server` in `web/`).
 5. Try it in the demo build: `cd web && VITE_MOCK=1 npm run dev`, then open
@@ -76,31 +79,32 @@ generated, so don't edit them by hand. Server keys that start with `error|` are 
 
 ### Tone
 
-* Informal and friendly: Kinwall talks to a family, kids included (German uses "du").
+* Informal and friendly: Kinwall talks to a family, kids included (German uses "du", Chinese uses 你
+  rather than 您).
 * Short and plain. Name things the way a family would, not the way the code does.
 * Follow your language's own conventions for capitalization, quotes and punctuation.
 
 ### Glossary
 
-Keep these the same everywhere. The German column is what Kinwall uses.
+Keep these the same everywhere. The German and Chinese columns are what Kinwall uses.
 
-| English | German |
-|---|---|
-| Board | Board |
-| Chores | Aufgaben |
-| Lists | Listen |
-| Rewards | Belohnungen |
-| Points (pts) | Punkte (Pkt.) |
-| To approve / Approve | Zur Freigabe / Freigeben |
-| Meals | Essen |
-| Journal | Tagebuch |
-| Activities | Aktivitäten |
-| Settings | Einstellungen |
-| Household | Haushalt |
-| Wall screen | Wandbildschirm |
-| A grown-up / parent | Ein Erwachsener / Elternteil |
-| Shopping mode | Einkaufen |
-| Clear checked | Abgehakte entfernen |
+| English | German | Chinese |
+|---|---|---|
+| Board | Board | 看板 |
+| Chores | Aufgaben | 家务 |
+| Lists | Listen | 清单 |
+| Rewards | Belohnungen | 奖励 |
+| Points (pts) | Punkte (Pkt.) | 积分 |
+| To approve / Approve | Zur Freigabe / Freigeben | 待批准 / 批准 |
+| Meals | Essen | 餐食 |
+| Journal | Tagebuch | 日记 |
+| Activities | Aktivitäten | 活动 |
+| Settings | Einstellungen | 设置 |
+| Household | Haushalt | 家庭 |
+| Wall screen | Wandbildschirm | 墙面屏 |
+| A grown-up / parent | Ein Erwachsener / Elternteil | 家长 |
+| Shopping mode | Einkaufen | 购物模式 |
+| Clear checked | Abgehakte entfernen | 清除已勾选 |
 
 ## For developers
 
@@ -162,11 +166,10 @@ tn(n, '{n} chore left', '{n} chores left')
 * **The server:** push notifications and the in-app notifications, transition and leave-by
   reminders, the newscast, insights and the battery, the refill card, Security activity, outing
   ideas, the weather, profile badges, the Snapshot greeting, error messages, and recipe import (it
-  also recognizes German recipe headings: Zutaten, Zubereitung).
+  also recognizes German recipe headings: Zutaten, Zubereitung, and Chinese ones: 食材/配料, 做法/步骤).
 * **Not yet:** the phone apps' own screens (widgets, Live Activity buttons, Siri and the share sheet)
   follow the phone's language and are English; Home Assistant, activity plugins and calendar and
-  recipe parsers are English; content like coloring page names, tidbits and the check-in feelings
-  shows in English. The public share pages (a shared recipe or list) and the MCP tools' text are
+  recipe parsers are English; content like coloring page names and tidbits shows in English. The public share pages (a shared recipe or list) and the MCP tools' text are
   English.
 * **Saved as written:** text Kinwall fills in for you and then saves is in the language of the
   screen or the family at the time, and stays that way: suggested rewards and praise chips, starter
