@@ -223,10 +223,9 @@ export function parseRecipeHtml(html: string, pageUrl: string): RecipePreview | 
   };
 }
 
-// The headings in English, German and Chinese (a German family pastes "Zutaten" and "Zubereitung",
-// a Chinese one "食材" and "做法").
-const INGREDIENTS = /^(?:ingredients?|what you(?:'|’)?ll need|you will need|zutaten|(?:was )?du brauchst|食材|配料|原料|用料|所需材料)\s*[:：]?$/i;
-const STEPS = /^(?:directions?|instructions?|method|steps|preparation|zubereitung|anleitung|schritte|so geht'?s|做法|步骤|制作方法|烹饪步骤|制法)\s*[:：]?$/i;
+// The headings in English and German (a German family pastes "Zutaten" and "Zubereitung").
+const INGREDIENTS = /^(?:ingredients?|what you(?:'|’)?ll need|you will need|zutaten|(?:was )?du brauchst)\s*:?$/i;
+const STEPS = /^(?:directions?|instructions?|method|steps|preparation|zubereitung|anleitung|schritte|so geht'?s)\s*:?$/i;
 /** Pasted recipe text: a name on the first line, then an "Ingredients" heading over one ingredient per
  * line, then "Directions" (or Instructions, Method, Steps) over the steps. Null without an
  * Ingredients heading. */
@@ -237,7 +236,7 @@ export function parseRecipeText(text: string, sourceUrl: string | null = null): 
   const found = lines.findIndex((l, i) => i > ing && STEPS.test(l.replace(/^#+\s*/, '')));
   const stepAt = found < 0 ? lines.length : found;
   const head = lines.slice(0, ing).filter(Boolean);
-  const yieldLine = head.find((l) => /^(serves|servings|yield|makes)\b/i.test(l) || /^\d+\s*(?:人份|份)/.test(l));
+  const yieldLine = head.find((l) => /^(serves|servings|yield|makes)\b/i.test(l));
   const about = head.slice(1).filter((l) => l !== yieldLine);
   return {
     name: (head[0] ?? '').replace(/^#+\s*/, '').slice(0, 200), description: about.join(' ').slice(0, 10000) || null, imageUrl: null, sourceUrl,

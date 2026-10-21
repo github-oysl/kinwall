@@ -43,8 +43,7 @@ const FRACTIONS: Record<string, string> = { '½': '1/2', '⅓': '1/3', '⅔': '2
  * "unit" (a kit's word for "one of") means no unit. Anything unrecognized stays in the name. */
 export function parseIngredientLine(line: string): { name: string; quantity: number | null; unit: string | null } {
   const text = line.replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/g, (f) => ` ${FRACTIONS[f]}`).replace(/\u2044/g, '/').replace(/\s+/g, ' ').trim();
-  // A Chinese amount needs no space before its unit ("2个鸡蛋"), so a Chinese character can follow it.
-  const amount = /^(?:(\d+) )?(\d+)\/(\d+)(?= |$|[\u4e00-\u9fff])|^(\d*\.?\d+)(?= |$|[\u4e00-\u9fff])/.exec(text);
+  const amount = /^(?:(\d+) )?(\d+)\/(\d+)(?= |$)|^(\d*\.?\d+)(?= |$)/.exec(text);
   if (!amount) return { name: text, quantity: null, unit: null };
   const quantity = amount[4] !== undefined ? Number(amount[4]) : Number(amount[1] ?? 0) + Number(amount[2]) / Number(amount[3]);
   let rest = text.slice(amount[0].length).trim();
@@ -56,10 +55,6 @@ export function parseIngredientLine(line: string): { name: string; quantity: num
     // Kits repeat the unit abbreviated: "1 teaspoon (tsp) Cooking Oil".
     const abbr = /^\((fl\.? ?oz|[a-z]+)\.?\)(?= |$)/i.exec(rest);
     if (abbr && (LINE_UNITS.has(abbr[1].toLowerCase()) || /^fl/i.test(abbr[1])) && rest.length > abbr[0].length) rest = rest.slice(abbr[0].length).trim();
-  } else {
-    // Chinese units sit right against the amount and the name ("2个鸡蛋", "500 克面粉").
-    const cn = /^(千克|毫升|茶匙|汤匙|大勺|小勺|升|克|斤|两|个|只|颗|根|片|块|杯|碗|勺|包|袋|盒|瓶|把|束|串|撮|条|张|枚|粒|瓣|朵|罐|桶|滴|份)(?=[\u4e00-\u9fff])/.exec(rest);
-    if (cn && rest.length > cn[0].length) { unit = cn[1]; rest = rest.slice(cn[0].length).trim(); }
   }
   return { name: rest || text, quantity: rest && Number.isFinite(quantity) ? quantity : null, unit: rest ? unit : null };
 }

@@ -166,7 +166,7 @@ tn(n, '{n} chore left', '{n} chores left')
 * **The server:** push notifications and the in-app notifications, transition and leave-by
   reminders, the newscast, insights and the battery, the refill card, Security activity, outing
   ideas, the weather, profile badges, the Snapshot greeting, error messages, and recipe import (it
-  also recognizes German recipe headings: Zutaten, Zubereitung, and Chinese ones: 食材/配料, 做法/步骤).
+  also recognizes German recipe headings: Zutaten, Zubereitung).
 * **Not yet:** the phone apps' own screens (widgets, Live Activity buttons, Siri and the share sheet)
   follow the phone's language and are English; Home Assistant, activity plugins and calendar and
   recipe parsers are English; content like coloring page names and tidbits shows in English. The public share pages (a shared recipe or list) and the MCP tools' text are
